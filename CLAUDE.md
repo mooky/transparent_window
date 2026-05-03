@@ -28,8 +28,12 @@ No test project exists currently.
 
 Single-form Windows Forms application with the standard partial class pattern:
 
-- **`Program.cs`** — Entry point. Calls `ApplicationConfiguration.Initialize()` then runs `Form1` on an STA thread.
-- **`Form1.cs`** — Logic for the main window; extend this for all runtime behavior.
-- **`Form1.Designer.cs`** — Auto-generated designer code. Do not edit manually; modify via Visual Studio designer or `InitializeComponent()` only.
+- **`Program.cs`** — Entry point. Calls `ApplicationConfiguration.Initialize()` then runs `MainForm` on an STA thread.
+- **`MainForm.cs`** — Logic for the main window; extend this for all runtime behavior.
+- **`MainForm.Designer.cs`** — Auto-generated designer code. Do not edit manually; modify via Visual Studio designer or `InitializeComponent()` only.
 
 Implicit usings are enabled, so `System.Windows.Forms`, `System.Drawing`, and other common namespaces are available without explicit `using` statements.
+
+## Git
+
+Never include `Co-Authored-By: Claude` or any Claude attribution in commit messages.
