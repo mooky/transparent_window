@@ -1,0 +1,14 @@
+C:\repos\transparent_window\bin\Debug\net9.0-windows\transparent_window.exe
+C:\repos\transparent_window\bin\Debug\net9.0-windows\transparent_window.deps.json
+C:\repos\transparent_window\bin\Debug\net9.0-windows\transparent_window.runtimeconfig.json
+C:\repos\transparent_window\bin\Debug\net9.0-windows\transparent_window.dll
+C:\repos\transparent_window\bin\Debug\net9.0-windows\transparent_window.pdb
+C:\repos\transparent_window\obj\Debug\net9.0-windows\transparent_window.GeneratedMSBuildEditorConfig.editorconfig
+C:\repos\transparent_window\obj\Debug\net9.0-windows\transparent_window.AssemblyInfoInputs.cache
+C:\repos\transparent_window\obj\Debug\net9.0-windows\transparent_window.AssemblyInfo.cs
+C:\repos\transparent_window\obj\Debug\net9.0-windows\transparent_window.csproj.CoreCompileInputs.cache
+C:\repos\transparent_window\obj\Debug\net9.0-windows\transparent_window.dll
+C:\repos\transparent_window\obj\Debug\net9.0-windows\refint\transparent_window.dll
+C:\repos\transparent_window\obj\Debug\net9.0-windows\transparent_window.pdb
+C:\repos\transparent_window\obj\Debug\net9.0-windows\transparent_window.genruntimeconfig.cache
+C:\repos\transparent_window\obj\Debug\net9.0-windows\ref\transparent_window.dll
