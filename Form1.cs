@@ -12,6 +12,7 @@ public partial class Form1 : Form
         BackColor        = Color.White;
         TransparencyKey  = Color.White;
         ShowInTaskbar    = false;
+        TopMost          = true;
 
         var imagePath = Path.Combine(AppContext.BaseDirectory, "context", "images", "monkey.png");
         using var original = new Bitmap(imagePath);
@@ -24,8 +25,17 @@ public partial class Form1 : Form
         }
         ClientSize = scaledSize;
 
-        KeyPreview = true;
-        KeyDown   += (_, e) => { if (e.KeyCode == Keys.Escape) Application.Exit(); };
+    }
+
+    protected override CreateParams CreateParams
+    {
+        get
+        {
+            const int WS_EX_NOACTIVATE = 0x08000000;
+            var cp = base.CreateParams;
+            cp.ExStyle |= WS_EX_NOACTIVATE;
+            return cp;
+        }
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -37,6 +47,15 @@ public partial class Form1 : Form
 
     protected override void WndProc(ref Message m)
     {
+        const int WM_MOUSEACTIVATE = 0x0021;
+        const int MA_NOACTIVATE    = 3;
+
+        if (m.Msg == WM_MOUSEACTIVATE)
+        {
+            m.Result = (IntPtr)MA_NOACTIVATE;
+            return;
+        }
+
         const int WM_SYSCOMMAND = 0x0112;
         const int SC_MINIMIZE   = 0xF020;
         const int SC_MAXIMIZE   = 0xF030;
@@ -47,6 +66,14 @@ public partial class Form1 : Form
             int cmd = m.WParam.ToInt32() & 0xFFF0;
             if (cmd == SC_MINIMIZE || cmd == SC_MAXIMIZE || cmd == SC_RESTORE)
                 return; // swallow — never minimize, maximize, or restore
+        }
+
+        const int WM_NCLBUTTONDBLCLK = 0x00A3;
+
+        if (m.Msg == WM_NCLBUTTONDBLCLK)
+        {
+            Application.Exit();
+            return;
         }
 
         const int WM_NCHITTEST  = 0x0084;
