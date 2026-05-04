@@ -59,6 +59,7 @@ public partial class MainForm : Form
         var scaled = new Bitmap(size.Width, size.Height);
         using var g = Graphics.FromImage(scaled);
         g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        g.PixelOffsetMode   = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
         g.DrawImage(original, 0, 0, size.Width, size.Height);
         return scaled;
     }
@@ -77,8 +78,7 @@ public partial class MainForm : Form
             for (int x = 0; x < bmp.Width;  x++)
             {
                 int i = y * stride + x * 4;
-                byte b = pixels[i], g = pixels[i + 1], r = pixels[i + 2];
-                map[x, y] = !(r >= 250 && g >= 250 && b >= 250);
+                map[x, y] = pixels[i + 3] > 32;
             }
         }
         finally
@@ -129,7 +129,7 @@ public partial class MainForm : Form
         base.WndProc(ref m);
         if (_opaque == null) return;
 
-        int lp     = m.LParam.ToInt32();
+        int lp     = (int)m.LParam;
         var client = PointToClient(new Point((short)(lp & 0xFFFF), (short)(lp >> 16)));
 
         bool isOpaque = client.X >= 0 && client.X < _monkey!.Width &&

@@ -10,5 +10,6 @@
     <Image x:Name="MonkeyImage"
            Stretch="None"
            HorizontalAlignment="Left"
-           VerticalAlignment="Top"/>
+           VerticalAlignment="Top"
+           RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 </Window>

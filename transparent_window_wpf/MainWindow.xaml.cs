@@ -92,8 +92,8 @@ public partial class MainWindow : Window
         bi.EndInit();
         bi.Freeze();
 
-        int dstW = (int)(bi.PixelWidth  * scale);
-        int dstH = (int)(bi.PixelHeight * scale);
+        int dstW = (int)(bi.Width  * scale);
+        int dstH = (int)(bi.Height * scale);
 
         // Render scaled image to a physical-pixel RenderTargetBitmap.
         var visual = new DrawingVisual();
@@ -110,16 +110,26 @@ public partial class MainWindow : Window
         var pixels = new byte[stride * dstH];
         cvt.CopyPixels(pixels, stride, 0);
 
-        // Build opacity map; replace near-white pixels with fully transparent.
+        // Build opacity map; un-premultiply kept pixels (FormatConvertedBitmap Pbgra32→Bgra32
+        // copies bytes as-is without dividing RGB by alpha, so we correct that here).
         var opaque = new bool[dstW, dstH];
         for (int y = 0; y < dstH; y++)
         for (int x = 0; x < dstW; x++)
         {
             int  i  = y * stride + x * 4;
-            byte b  = pixels[i], g = pixels[i + 1], r = pixels[i + 2], a = pixels[i + 3];
-            bool op = a > 32 && !(r >= 250 && g >= 250 && b >= 250);
+            byte a  = pixels[i + 3];
+            bool op = a > 32;
             opaque[x, y] = op;
-            if (!op) pixels[i] = pixels[i + 1] = pixels[i + 2] = pixels[i + 3] = 0;
+            if (!op)
+            {
+                pixels[i] = pixels[i + 1] = pixels[i + 2] = pixels[i + 3] = 0;
+            }
+            else if (a < 255)
+            {
+                pixels[i]     = (byte)Math.Min(255, (pixels[i]     * 255 + a / 2) / a);
+                pixels[i + 1] = (byte)Math.Min(255, (pixels[i + 1] * 255 + a / 2) / a);
+                pixels[i + 2] = (byte)Math.Min(255, (pixels[i + 2] * 255 + a / 2) / a);
+            }
         }
 
         // Final bitmap carries screen DPI so WPF renders it pixel-perfect.
@@ -162,7 +172,7 @@ public partial class MainWindow : Window
     {
         if (_opaque == null) return IntPtr.Zero;
 
-        int lp = lParam.ToInt32();
+        int lp = (int)lParam;
         var pt = new POINT { X = (short)(lp & 0xFFFF), Y = (short)(lp >> 16) };
         ScreenToClient(_hwnd, ref pt);
 
