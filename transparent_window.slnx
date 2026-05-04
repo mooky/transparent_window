@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="transparent_window_winforms/transparent_window.csproj" />
+  <Project Path="transparent_window_wpf/transparent_window_wpf.csproj" />
+</Solution>
